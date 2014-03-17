@@ -28,7 +28,7 @@ object Statistics {
 	     
 	     case None => {
 	       val actor = Akka.system.actorOf( Props( new StatisticsActor( id ) ), name = s"host-$id" )   
-    	   Akka.system.scheduler.schedule( 0.seconds, 1.second, actor, Refresh )
+    	   Akka.system.scheduler.schedule( 0.seconds, 3.second, actor, Refresh )
     	   actors += ( id -> actor )
     	   actor
 	     }

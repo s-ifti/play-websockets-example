@@ -12,8 +12,8 @@ import scala.concurrent.duration.DurationInt
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 object Application extends Controller {  
-  def index = Action { implicit request =>
-    Ok( views.html.dashboard( "Perf mon", Hosts.hosts() ) )
+  def index = Action {
+    Ok( views.html.dashboard( "Dashboard", Hosts.hosts() ) )
   }
   
   def host( id: String ) = Action { implicit request =>
