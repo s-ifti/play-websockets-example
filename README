@@ -2,3 +2,6 @@ This is a sample Play 2.1 application to demonstrated web sockets usage
 =====================================
 
 This file will be packaged with your application, when using `play dist`.
+
+This is a fork of reta/play-websocket-example, primary change is to use 
+rickshaw for real-time charting.
