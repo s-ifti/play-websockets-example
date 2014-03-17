@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <link rel="stylesheet" href="../bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../rickshaw/rickshaw.min.css">
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+        <link rel="stylesheet" href="../LCDBOLD/font.css">
+        <link href='http://fonts.googleapis.com/css?family=Nova+Square' rel='stylesheet' type='text/css'>
+
+        <style type="text/css">
+
+        body {
+            padding-top:1em;
+        }
+
+
+         .lcd {
+            font-family: 'LCDBOLD';
+            font-weight: normal;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+            padding: 0.5em;
+            background-color: transparent;
+            nbackground-image: linear-gradient(to bottom, rgba(88,109,78,0.3) 0%, rgba(88,109,78,0.6) 120%);
+            nbox-shadow: inset 0px 0px 8px rgba(0,0,0,0.5);
+            letter-spacing: 2px;
+            display: inline-block;
+            min-width: 4em;
+            text-align: center;
+            color: #333;
+            
+            font-size:16px;
+            border:none;
+            min-width:5em;
+        }
+
+        .chart-container {
+
+            aborder: dotted 1px silver;
+            aborder-bottom: dotted 1px silver;
+            box-shadow: inset 0px 0px 10px rgba(0,0,0,0.3);
+            z-index:99999;
+            position:relative;
+            width:80%;
+            margin-left:10%;
+            margin-right:10px; 
+            margin-top:0;
+            color: #999;
+
+            overflow:scroll;
+            sbackground-color:rgba(88,109,78,0.3);
+            sbackground-image: linear-gradient(to bottom, rgba(88,109,78,0.3) 0%, rgba(88,109,78,0.6) 120%);
+            box-shadow: inset 0px 0px 8px rgba(0,0,0,0.5);
+            
+
+        }
+        .toolbar.header {
+            font-family:'Nova Square';
+            color:#999;
+            font-size:20px;
+
+        }
+        .toolbar{
+
+            margin-top:0;
+            margin-bottom:0;
+            width:100%;
+            margin-left:10%;
+            width:80%;
+            color:black;
+            background-color: white;
+            background-image: linear-gradient(to bottom, rgba(88,109,78,0.3) 0%, rgba(88,109,78,0.6) 120%);
+            
+        }
+        .toolbar  .lcd:hover {
+            background-image: linear-gradient(to bottom, rgba(88,109,78,0.3) 0%, rgba(88,109,78,0.6) 120%);
+            box-shadow: inset 0px 0px 8px rgba(0,0,0,0.5);
+            color:black;
+            
+
+        }
+        </style>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Add your site or application content here -->
+<div class="toolbar header">
+
+    <button class="lcd" type="button"><span style=""><i class="glyphicon glyphicon-list"></i> Perf Monster</span>
+    </button>
+</div>
+        <div class="chart-container" id="perfmon" style="">
+        <div id="preview">
+        </div>
+        </div>
+        
+        <div class="toolbar" style="">
+                <button type="button" class="lcd">ISWEBA03</button>
+                <button type="button" class="lcd">CPU</button>
+                <button type="button" class="lcd" style="min-width:2em;">[+]</button>
+        </div>
+
+<div class="toolbar" style="">
+                <button type="button" class="lcd" style="text-align:left;min-width:2em;">[+]</button>
+        </div>
+
+
+        
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+
+        <script src="../d3/d3.min.js"></script>
+        <script src="../rickshaw/rickshaw.min.js"></script>
+        <script type="text/javascript">
+
+
+var tv=1000;
+
+// instantiate our graph!
+var graph = new Rickshaw.Graph( {
+    element: document.getElementById("perfmon"),
+    width: $('.chart-container').width(),
+    height: 300,
+    renderer: 'line',
+    series: new Rickshaw.Series.FixedDuration([{ name: 'one', color:'black' },
+        {name: 'two', color:'orange'}], undefined, {
+        timeInterval: tv,
+        maxDataPoints: 100,
+        timeBase: new Date().getTime() / 1000
+    }) 
+} );
+var xAxis = new Rickshaw.Graph.Axis.Time({
+    graph: graph
+});
+
+xAxis.render();
+var yAxis = new Rickshaw.Graph.Axis.Y({
+    graph: graph
+});
+
+yAxis.render();
+var hoverDetail = new Rickshaw.Graph.HoverDetail( {
+    graph: graph,
+    xFormatter: function(x) { return x + "seconds" },
+    yFormatter: function(y) { return Math.floor(y) + " percent" }
+} );
+graph.render();
+var preview = new Rickshaw.Graph.RangeSlider.Preview( {
+    graph: graph,
+    element: document.getElementById('preview'),
+} );
+// add some data every so often
+
+var i = 0;
+var tick = function() {
+
+    var data = { one: Math.floor(Math.random() * 40) + 520 };
+
+    var randInt = Math.floor(Math.random()*100);
+    data.two = (Math.sin(i++ / 40) + 4) * (randInt + 100);
+    data.three = randInt + 300;
+
+    graph.series.addData(data);
+    graph.render();
+  
+};
+
+var iv = setInterval( tick, tv );
+//window.requestAnimationFrame(tick);
+
+        </script>
+    </body>
+</html>
